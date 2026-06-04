@@ -1,0 +1,29 @@
+{
+  "LOG": true,
+  "API_TIMEOUT_MS": 600000,
+  "Providers": [
+    {
+      "name": "litellm",
+      "api_base_url": "http://127.0.0.1:4000/v1/chat/completions",
+      "api_key": "__LITELLM_API_KEY__",
+      "models": [
+        "deepseek-v4-flash",
+        "deepseek-v4-pro",
+        "qwen3.6-flash",
+        "qwen3-coder"
+      ],
+      "transformer": {
+        "use": [
+          "openai"
+        ]
+      }
+    }
+  ],
+  "Router": {
+    "default": "litellm,deepseek-v4-flash",
+    "think": "litellm,deepseek-v4-pro",
+    "background": "litellm,qwen3.6-flash"
+  },
+  "APIKEY": "__CCR_APIKEY__",
+  "HOST": "0.0.0.0"
+}

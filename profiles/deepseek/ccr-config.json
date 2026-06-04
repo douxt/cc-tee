@@ -1,0 +1,23 @@
+{
+  "LOG": true,
+  "API_TIMEOUT_MS": 600000,
+  "Providers": [
+    {
+      "name": "deepseek",
+      "api_base_url": "https://api.deepseek.com/chat/completions",
+      "api_key": "__DEEPSEEK_API_KEY__",
+      "models": [
+        "deepseek-v4-flash",
+        "deepseek-v4-pro"
+      ],
+      "transformer": {
+        "use": ["deepseek"]
+      }
+    }
+  ],
+  "Router": {
+    "default": "deepseek,deepseek-v4-flash"
+  },
+  "APIKEY": "__CCR_APIKEY__",
+  "HOST": "0.0.0.0"
+}

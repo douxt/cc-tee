@@ -1,0 +1,31 @@
+general_settings:
+  master_key: sk-litellm-master
+
+model_list:
+  - model_name: deepseek-v4-flash
+    litellm_params:
+      model: openai/deepseek-v4-flash
+      api_key: sk-8480417eed0046b1851d2b5fa56e5e97
+      api_base: https://api.deepseek.com
+
+  - model_name: deepseek-v4-pro
+    litellm_params:
+      model: openai/deepseek-v4-pro
+      api_key: sk-8480417eed0046b1851d2b5fa56e5e97
+      api_base: https://api.deepseek.com
+
+  - model_name: qwen3.6-flash
+    litellm_params:
+      model: openai/qwen3.6-flash
+      api_key: sk-7338fd9b761a4ef8bebf01e5b1193c39
+      api_base: https://dashscope.aliyuncs.com/compatible-mode/v1
+
+  - model_name: qwen3-coder
+    litellm_params:
+      model: openai/qwen3-coder-plus
+      api_key: sk-7338fd9b761a4ef8bebf01e5b1193c39
+      api_base: https://dashscope.aliyuncs.com/compatible-mode/v1
+
+litellm_settings:
+  drop_params: true
+  set_verbose: false

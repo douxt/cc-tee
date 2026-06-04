@@ -1,0 +1,7 @@
+config/secret.json
+logs/
+backups/
+ccr/
+litellm/config.yaml
+*.bak
+__pycache__/
