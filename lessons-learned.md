@@ -1,4 +1,4 @@
-# cc-stack 踩坑记录
+# cc-tee 踩坑记录
 
 记录集成 Claude Code + DeepSeek + WebSearch 中遇到的坑和解决方案。
 

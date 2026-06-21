@@ -1,8 +1,41 @@
-# cc-stack
+# cc-tee
 
-**Claude Code 后端协议栈 — 最简透传路由代理，零依赖 Node.js 单文件。**
+**一路分叉，水流无痕。Claude Code 多层路由切换 + 零依赖透传代理。**
 
-> Claude Code backend protocol stack — a minimal passthrough proxy in a single zero-dependency Node.js file.
+> Split the stream, keep it clean. Multi-profile router switch + zero-dependency passthrough proxy for Claude Code.
+
+---
+
+## 命名哲学 / Why "tee"
+
+**tee** = 三通接头。水管工的一分二利器——一路水管进来，分两路出去。
+
+就像 `deepqwen`：Claude Code 发来一个模型名，tee 把它分叉到 DeepSeek 和 Qwen 两个上游。换个 profile 就是换种分法。水经过三通，不加工，不改性——mini-router.js 只透传，不翻译。
+
+> A plumbing tee fitting: one stream in, two (or more) out. Like the `deepqwen` profile — Claude Code sends one model name, tee splits it to DeepSeek and Qwen upstreams. Switch profile, switch the split. Water passes through unchanged — the mini-router only forwards, never translates.
+
+---
+
+## 多重切换 / Profiles
+
+`./scripts/switch-profile.sh` 一键切换所有路由层，从裸直连到全功能网关：
+
+| Profile | 路由规则 | 代理层 |
+|---------|---------|--------|
+| `deepqwen` | Haiku→DS Flash / Sonnet→DS Pro / Opus→Qwen3.7-Max | **mini-router** 透传 |
+| `deepseek` | Haiku→DS Flash / 其余→DS Pro | CCR |
+| `deepseek-tc` | 全量→DS + tool_choice 降级修复 | CCR |
+| `deepseek-anthropic` | 全量→DS Anthropic 协议透传 | CCR |
+| `direct deepseek` | 全量→DeepSeek | 无（直连） |
+| `direct qwen` | 全量→百炼 Qwen | 无（直连） |
+| `hybrid-ds` | Haiku→DS Flash / Sonnet→DS Pro / Opus→Qwen3.7-Max | CCR |
+| `hybrid` | Haiku→DS / Sonnet+Opus→Qwen | CCR |
+| `hybrid-toolfree` | 全量→DS V4 Flash | CCR |
+| `layer2-search` | CCR + Tavily 搜索注入 | CCR |
+| `layer2` | CCR + LiteLLM | CCR + LiteLLM |
+| `layer3` | CCR + LiteLLM(OpenRouter) | CCR + LiteLLM |
+
+> 更多 profile 见 `./scripts/switch-profile.sh help`。
 
 ---
 
@@ -10,15 +43,15 @@
 
 [mini-router.js](scripts/mini-router.js) — **196 行**，解析 model 字段做路由选择，其余 body 原样透传。不做格式翻译（Anthropic ↔ OpenAI），只做最纯粹的 HTTP 转发。
 
-对比 [claude-code-router](https://github.com/musistudio/claude-code-router)（35k+ stars）等全功能网关，cc-stack 的哲学是：**如果上游已原生支持 Anthropic Messages API，就不要在中间加翻译层。**
+对比 [claude-code-router](https://github.com/musistudio/claude-code-router)（35k+ stars）等全功能网关，cc-tee 的哲学是：**如果上游已原生支持 Anthropic Messages API，就不要在中间加翻译层。**
 
-> **196 lines**. Routes by model field, forwards everything else as-is. No format translation (Anthropic ↔ OpenAI), just pure HTTP passthrough. Built for providers that already speak Anthropic natively (DeepSeek, vLLM, etc.).
+> **196 lines**. Routes by model field, forwards everything else as-is. No format translation, just pure HTTP passthrough. Built for providers that already speak Anthropic natively.
 
 ---
 
 ## 为什么不用 cc-router / Why not cc-router?
 
-| | cc-router | **cc-stack (mini-router)** |
+| | cc-router | **cc-tee (mini-router)** |
 |---|---|---|
 | 代码量 | 数千行 TypeScript | **196 行 JavaScript** |
 | 格式翻译 | 默认翻译，passthrough 是二等公民 | **只透传，零翻译** |
@@ -51,7 +84,7 @@ cp config/secret.template.json config/secret.json
 
 启动后 `ANTHROPIC_BASE_URL` 已自动写入 `~/.claude/settings.local.json`，Reload VSCode 窗口即可。
 
-> After switching, `ANTHROPIC_BASE_URL` is auto-configured in `~/.claude/settings.local.json`. Reload your VSCode window to apply.
+> `ANTHROPIC_BASE_URL` auto-configured in `~/.claude/settings.local.json`. Reload VSCode to apply.
 
 ---
 
@@ -69,38 +102,27 @@ Claude Code (VSCode / CLI)
 │  ② 匹配路由规则              │
 │  ③ 原样透传 body 到上游       │
 │     不改一个字               │
-└─────────────────────────────┘
-    │
-    ├─ Haiku → DeepSeek V4 Flash ──► api.deepseek.com/anthropic
-    ├─ Sonnet → DeepSeek V4 Pro ───► api.deepseek.com/anthropic
-    └─ Opus → Qwen 3.7 Max ──────► dashscope.aliyuncs.com/apps/anthropic
+└──────────┬──────────────────┘
+           │
+     ┌─────┴─────┐
+     │           │
+     ▼           ▼
+  DeepSeek     Qwen 百炼
+  (Flash/Pro)  (3.7-Max)
 ```
-
----
-
-## 路由模式 / Profiles
-
-| Profile | 说明 |
-|---------|------|
-| `deepqwen` | DeepSeek + Qwen 组合，mini-router 真透传 |
-| `direct deepseek` | 直连 DeepSeek，不走代理 |
-| `direct qwen` | 直连阿里百炼 Qwen |
-| `deepseek` | CCR 全量 DeepSeek 路由 |
-
-更多 profile 见 `./scripts/switch-profile.sh help`。
 
 ---
 
 ## 目录 / Structure
 
 ```
-cc-stack/
+cc-tee/
 ├── scripts/
 │   ├── mini-router.js          ← 核心：196 行透传代理
 │   ├── switch-profile.sh       ← 一键切换路由模式
 │   └── merge-config.py         ← 配置合并工具
 ├── profiles/                   ← 各 Provider 路由配置
-│   ├── deepqwen/                 ← DeepSeek+Qwen 透传
+│   ├── deepqwen/               ← DeepSeek+Qwen 透传
 │   ├── deepseek/               ← DeepSeek CCR 路由
 │   ├── direct/                 ← 直连模式
 │   └── ...
