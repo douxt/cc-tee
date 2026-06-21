@@ -29,11 +29,11 @@ resolve_secret() {
 }
 
 if [ -z "$PROFILE" ]; then
-  echo "用法: $0 <deepseek|deepseek-tc|deepseek-anthropic|layer2-search|hybrid-ds|hybrid-ds-passthrough|direct [qwen|deepseek]|hybrid|hybrid-toolfree|layer1|layer2|layer3>"
+  echo "用法: $0 <deepseek|deepseek-tc|deepseek-anthropic|layer2-search|hybrid-ds|deepqw|direct [qwen|deepseek]|hybrid|hybrid-toolfree|layer1|layer2|layer3>"
   echo ""
   echo "  deepseek          — 纯 DeepSeek CCR 路由（Haiku→Flash, 其余→Pro）"
   echo "  hybrid-ds         — Haiku→DeepSeek Flash / Sonnet→DeepSeek Pro / Opus→Qwen3.7-Max（OpenAI转换）"
-  echo "  hybrid-ds-passthrough — 同上路由，Anthropic真透传（实验）"
+  echo "  deepqw — DeepSeek+Qwen 组合，mini-router 真透传"
   echo "  layer2-search     — CCR + LiteLLM + WebSearch随机二选一（Tavily/Exa）"
   echo "  hybrid            — Haiku→DeepSeek / Sonnet+Opus→Qwen（有tool走Qwen）"
   echo "  hybrid-toolfree   — 全部→DeepSeek V4 Flash（不判断tool）"
@@ -47,7 +47,7 @@ case "$PROFILE" in
       *) echo "错误: direct 可选 qwen 或 deepseek"; exit 1 ;;
     esac
     ;;
-  hybrid|hybrid-toolfree|layer1|layer2|layer3|deepseek|deepseek-tc|deepseek-anthropic|layer2-search|hybrid-ds|hybrid-ds-passthrough) ;;
+  hybrid|hybrid-toolfree|layer1|layer2|layer3|deepseek|deepseek-tc|deepseek-anthropic|layer2-search|hybrid-ds|deepqw) ;;
   *) echo "错误: 未知 '$PROFILE'"; exit 1 ;;
 esac
 
@@ -158,16 +158,16 @@ case "$PROFILE" in
     rm -f "$TMPCFG"
     echo "   Hybrid-DS: Haiku→Flash / Sonnet→Pro / Opus→Qwen3.7-Max [OpenAI转换]"
     ;;
-  hybrid-ds-passthrough)
+  deepqw)
     mkdir -p "$CCR_CONFIG_DIR"
     TMPCFG=$(mktemp)
-    resolve_secret "$PROFILES_DIR/hybrid-ds-passthrough/ccr-config.json" "$TMPCFG"
+    resolve_secret "$PROFILES_DIR/deepqw/ccr-config.json" "$TMPCFG"
     if [ -f "$CCR_CONFIG_DIR/config.json" ]; then
       python3 "$MERGE" ccr "$CCR_CONFIG_DIR/config.json" "$TMPCFG"
     else
       cp "$TMPCFG" "$CCR_CONFIG_DIR/config.json"
     fi
-    cp "$PROFILES_DIR/hybrid-ds-passthrough/custom-router.js" "$CCR_CONFIG_DIR/custom-router.js"
+    cp "$PROFILES_DIR/deepqw/custom-router.js" "$CCR_CONFIG_DIR/custom-router.js"
     rm -f "$TMPCFG"
     echo "   Hybrid-DS-Passthrough: 同上路由，Anthropic真透传 [实验]"
     ;;
@@ -220,7 +220,7 @@ case "$PROFILE" in
   hybrid|hybrid-toolfree|hybrid-ds|layer1|deepseek|deepseek-tc|deepseek-anthropic|layer2-search)
     sudo systemctl start ccr-serve 2>&1
     ;;
-  hybrid-ds-passthrough)
+  deepqw)
     sudo systemctl start mini-router 2>&1
     ;;
   layer2|layer3)
@@ -249,7 +249,7 @@ if [ -f "$VSCODE_SETTINGS" ]; then
     hybrid-ds)
       V_T='[{"name":"ANTHROPIC_BASE_URL","value":"http://localhost:3456"},{"name":"ANTHROPIC_AUTH_TOKEN","value":"__CCR_APIKEY__"},{"name":"ANTHROPIC_MODEL","value":"deepseek-v4-pro[1m]"},{"name":"ANTHROPIC_DEFAULT_HAIKU_MODEL","value":"deepseek-v4-flash[1m]"},{"name":"ANTHROPIC_DEFAULT_SONNET_MODEL","value":"deepseek-v4-pro[1m]"},{"name":"ANTHROPIC_DEFAULT_OPUS_MODEL","value":"qwen3.7-max[1m]"},{"name":"CLAUDE_CODE_SUBAGENT_MODEL","value":"deepseek-v4-flash"},{"name":"CLAUDE_CODE_EFFORT_LEVEL","value":"max"},{"name":"CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC","value":"1"}]'
       ;;
-    hybrid-ds-passthrough)
+    deepqw)
       V_T='[{"name":"ANTHROPIC_BASE_URL","value":"http://localhost:3457"},{"name":"ANTHROPIC_AUTH_TOKEN","value":"__CCR_APIKEY__"},{"name":"ANTHROPIC_MODEL","value":"deepseek-v4-pro[1m]"},{"name":"ANTHROPIC_DEFAULT_HAIKU_MODEL","value":"deepseek-v4-flash[1m]"},{"name":"ANTHROPIC_DEFAULT_SONNET_MODEL","value":"deepseek-v4-pro[1m]"},{"name":"ANTHROPIC_DEFAULT_OPUS_MODEL","value":"qwen3.7-max[1m]"},{"name":"CLAUDE_CODE_SUBAGENT_MODEL","value":"deepseek-v4-flash"},{"name":"CLAUDE_CODE_EFFORT_LEVEL","value":"max"},{"name":"CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC","value":"1"}]'
       ;;
     hybrid|hybrid-toolfree|layer1|layer2|layer3)
@@ -283,7 +283,7 @@ case "$PROFILE" in
     hybrid-ds)
       W_T='{"ANTHROPIC_BASE_URL":"http://localhost:3456","ANTHROPIC_AUTH_TOKEN":"__CCR_APIKEY__","ANTHROPIC_MODEL":"deepseek-v4-pro[1m]","ANTHROPIC_DEFAULT_HAIKU_MODEL":"deepseek-v4-flash[1m]","ANTHROPIC_DEFAULT_SONNET_MODEL":"deepseek-v4-pro[1m]","ANTHROPIC_DEFAULT_OPUS_MODEL":"qwen3.7-max[1m]","CLAUDE_CODE_SUBAGENT_MODEL":"deepseek-v4-flash","CLAUDE_CODE_EFFORT_LEVEL":"max","CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC":"1"}'
       ;;
-    hybrid-ds-passthrough)
+    deepqw)
       W_T='{"ANTHROPIC_BASE_URL":"http://localhost:3457","ANTHROPIC_AUTH_TOKEN":"__CCR_APIKEY__","ANTHROPIC_MODEL":"deepseek-v4-pro[1m]","ANTHROPIC_DEFAULT_HAIKU_MODEL":"deepseek-v4-flash[1m]","ANTHROPIC_DEFAULT_SONNET_MODEL":"deepseek-v4-pro[1m]","ANTHROPIC_DEFAULT_OPUS_MODEL":"qwen3.7-max[1m]","CLAUDE_CODE_SUBAGENT_MODEL":"deepseek-v4-flash","CLAUDE_CODE_EFFORT_LEVEL":"max","CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC":"1"}'
       ;;
     hybrid|hybrid-toolfree|layer1|layer2|layer3)
@@ -308,7 +308,7 @@ case "$PROFILE.$DIRECT_PROVIDER" in
   deepseek-anthropic)  echo "     供应商: DeepSeek (CCR路由, Anthropic协议透传)" ;;
   layer2-search)       echo "     CCR + Tavily 搜索注入 + Qwen视觉" ;;
   hybrid-ds)           echo "     Haiku→DS Flash | Sonnet→DS Pro | Opus→Qwen3.7-Max [OpenAI转换]" ;;
-  hybrid-ds-passthrough) echo "     同上路由，Anthropic真透传 [实验]" ;;
+  deepqw)              echo "     DeepSeek+Qwen 组合，mini-router 真透传" ;;
   hybrid)              echo "     Haiku→DeepSeek | Sonnet→QwenPlus | Opus→QwenMax" ;;
   hybrid-toolfree)     echo "     全部→DeepSeek V4 Flash（不判断tool）" ;;
   layer1)              echo "     CCR 协议转换路由" ;;
