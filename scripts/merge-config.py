@@ -24,7 +24,7 @@ def merge_ccr(target_path, profile_path):
     target['Providers'] = copy.deepcopy(profile['Providers'])
     target['Router'] = copy.deepcopy(profile['Router'])
     # 同步必要的基础设置（如果在 profile 中有定义）
-    for key in ('APIKEY', 'HOST', 'LOG', 'API_TIMEOUT_MS', 'CUSTOM_ROUTER_PATH'):
+    for key in ('APIKEY', 'HOST', 'LOG', 'API_TIMEOUT_MS', 'CUSTOM_ROUTER_PATH', 'transformers'):
         if key in profile:
             target[key] = copy.deepcopy(profile[key])
 

@@ -28,7 +28,7 @@
     }
   ],
   "Router": {
-    "default": "deepseek,deepseek-v4-flash"
+    "default": "deepseek,deepseek-v4-pro"
   },
   "APIKEY": "__CCR_APIKEY__",
   "HOST": "0.0.0.0"

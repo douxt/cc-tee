@@ -69,6 +69,6 @@ module.exports = async function router(req, config) {
   }
 
   const model = req.body.model;
-  if (model.includes('opus') || model.includes('v4-pro')) return 'deepseek,deepseek-v4-pro';
-  return 'deepseek,deepseek-v4-flash';
+  if (model.includes('haiku')) return 'deepseek,deepseek-v4-flash';
+  return 'deepseek,deepseek-v4-pro';
 };

@@ -21,7 +21,7 @@ start() {
     [ $? -eq 0 ] && { echo "CCR 已在运行 (PID $pid)"; return 0; }
     pkill -f "claude-code-router/dist/cli.js" 2>/dev/null; sleep 1
     nohup "$NODEBIN" "$CCRBIN" start >> "$LOGFILE" 2>&1 &
-    echo $! > "$PIDFILE"
+    disown; echo $! > "$PIDFILE"
     for i in $(seq 1 10); do
         curl -sf http://localhost:3456/ >/dev/null 2>&1 && { echo "CCR 已启动 (PID $(cat "$PIDFILE"))"; return 0; }
         sleep 0.5
