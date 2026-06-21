@@ -266,10 +266,10 @@ else
 fi
 
 # ── 同步 WSL 终端配置 ──
-WSL_SETTINGS="$HOME/.claude/settings.json"
-if [ -f "$WSL_SETTINGS" ]; then
-  echo "🔄 同步 WSL 终端配置..."
-  case "$PROFILE" in
+LOCAL_SETTINGS="$HOME/.claude/settings.local.json"
+[ -f "$LOCAL_SETTINGS" ] || echo '{}' > "$LOCAL_SETTINGS"
+echo "🔄 同步 WSL 终端配置..."
+case "$PROFILE" in
     direct)
       if [ "$DIRECT_PROVIDER" = "qwen" ]; then
         W_T='{"ANTHROPIC_BASE_URL":"https://dashscope.aliyuncs.com/apps/anthropic","ANTHROPIC_AUTH_TOKEN":"__DASHSCOPE_API_KEY__","ANTHROPIC_MODEL":"qwen3.6-plus","ANTHROPIC_DEFAULT_HAIKU_MODEL":"qwen3.6-flash","ANTHROPIC_DEFAULT_SONNET_MODEL":"qwen3.6-plus","ANTHROPIC_DEFAULT_OPUS_MODEL":"qwen3.7-max[1m]","CLAUDE_CODE_EFFORT_LEVEL":"max","CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC":"1"}'
@@ -293,11 +293,8 @@ if [ -f "$WSL_SETTINGS" ]; then
   WSL_ENVS="${W_T//__DEEPSEEK_API_KEY__/$DEEPSEEK_API_KEY}"
   WSL_ENVS="${WSL_ENVS//__DASHSCOPE_API_KEY__/$DASHSCOPE_API_KEY}"
   WSL_ENVS="${WSL_ENVS//__CCR_APIKEY__/$CCR_APIKEY}"
-  python3 "$MERGE" wsl "$WSL_SETTINGS" "$WSL_ENVS"
-  echo "   WSL 终端已同步"
-else
-  echo "⚠️  WSL ~/.claude/settings.json 未找到"
-fi
+python3 "$MERGE" wsl "$LOCAL_SETTINGS" "$WSL_ENVS"
+echo "   WSL 终端已同步"
 
 # ── 使用说明 ──
 echo ""
