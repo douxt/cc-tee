@@ -1,4 +1,6 @@
-config/secret.json
+# 秘钥文件（集中存储在 config/secret.json，权限 600）
+config/secret*.json
+!config/secret.template.json
 logs/
 backups/
 ccr/
