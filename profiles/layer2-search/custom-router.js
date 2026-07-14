@@ -6,7 +6,7 @@ module.exports = async function router(req, config) {
 
   if (hasImage) {
     // 有图片 → 走 Qwen Flash 多模态（DeepSeek V4 不支持视觉）
-    return 'dashscope,qwen3.6-flash';
+    return 'dashscope,qwen3.7-flash';
   }
 
   const hasWebSearch = req.body.tools?.some(t =>

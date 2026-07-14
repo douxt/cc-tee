@@ -238,7 +238,7 @@ if [ -f "$VSCODE_SETTINGS" ]; then
   case "$PROFILE" in
     direct)
       if [ "$DIRECT_PROVIDER" = "qwen" ]; then
-        V_T='[{"name":"ANTHROPIC_BASE_URL","value":"https://dashscope.aliyuncs.com/apps/anthropic"},{"name":"ANTHROPIC_AUTH_TOKEN","value":"__DASHSCOPE_API_KEY__"},{"name":"ANTHROPIC_MODEL","value":"qwen3.6-plus"},{"name":"ANTHROPIC_DEFAULT_HAIKU_MODEL","value":"qwen3.6-flash"},{"name":"ANTHROPIC_DEFAULT_SONNET_MODEL","value":"qwen3.6-plus"},{"name":"ANTHROPIC_DEFAULT_OPUS_MODEL","value":"qwen3.7-max[1m]"},{"name":"CLAUDE_CODE_EFFORT_LEVEL","value":"max"},{"name":"CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC","value":"1"}]'
+        V_T='[{"name":"ANTHROPIC_BASE_URL","value":"https://dashscope.aliyuncs.com/apps/anthropic"},{"name":"ANTHROPIC_AUTH_TOKEN","value":"__DASHSCOPE_API_KEY__"},{"name":"ANTHROPIC_MODEL","value":"qwen3.7-plus[1m]"},{"name":"ANTHROPIC_DEFAULT_HAIKU_MODEL","value":"qwen3.7-flash"},{"name":"ANTHROPIC_DEFAULT_SONNET_MODEL","value":"qwen3.7-plus[1m]"},{"name":"ANTHROPIC_DEFAULT_OPUS_MODEL","value":"qwen3.7-max[1m]"},{"name":"CLAUDE_CODE_SUBAGENT_MODEL","value":"qwen3.7-flash"},{"name":"CLAUDE_CODE_EFFORT_LEVEL","value":"max"},{"name":"CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC","value":"1"}]'
       else
         V_T='[{"name":"ANTHROPIC_BASE_URL","value":"https://api.deepseek.com/anthropic"},{"name":"ANTHROPIC_AUTH_TOKEN","value":"__DEEPSEEK_API_KEY__"},{"name":"ANTHROPIC_MODEL","value":"deepseek-v4-pro[1m]"},{"name":"ANTHROPIC_DEFAULT_HAIKU_MODEL","value":"deepseek-v4-flash[1m]"},{"name":"ANTHROPIC_DEFAULT_SONNET_MODEL","value":"deepseek-v4-pro[1m]"},{"name":"ANTHROPIC_DEFAULT_OPUS_MODEL","value":"deepseek-v4-pro[1m]"},{"name":"CLAUDE_CODE_SUBAGENT_MODEL","value":"deepseek-v4-flash[1m]"},{"name":"CLAUDE_CODE_EFFORT_LEVEL","value":"max"},{"name":"CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC","value":"1"}]'
       fi
@@ -253,7 +253,7 @@ if [ -f "$VSCODE_SETTINGS" ]; then
       V_T='[{"name":"ANTHROPIC_BASE_URL","value":"http://localhost:3457"},{"name":"ANTHROPIC_AUTH_TOKEN","value":"__CCR_APIKEY__"},{"name":"ANTHROPIC_MODEL","value":"deepseek-v4-pro[1m]"},{"name":"ANTHROPIC_DEFAULT_HAIKU_MODEL","value":"deepseek-v4-flash[1m]"},{"name":"ANTHROPIC_DEFAULT_SONNET_MODEL","value":"deepseek-v4-pro[1m]"},{"name":"ANTHROPIC_DEFAULT_OPUS_MODEL","value":"qwen3.7-max[1m]"},{"name":"CLAUDE_CODE_SUBAGENT_MODEL","value":"deepseek-v4-flash"},{"name":"CLAUDE_CODE_EFFORT_LEVEL","value":"max"},{"name":"CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC","value":"1"}]'
       ;;
     hybrid|hybrid-toolfree|layer1|layer2|layer3)
-      V_T='[{"name":"ANTHROPIC_BASE_URL","value":"http://localhost:3456"},{"name":"ANTHROPIC_AUTH_TOKEN","value":"__CCR_APIKEY__"},{"name":"ANTHROPIC_DEFAULT_HAIKU_MODEL","value":"deepseek-v4-flash[1m]"},{"name":"ANTHROPIC_DEFAULT_SONNET_MODEL","value":"qwen3.6-plus"},{"name":"ANTHROPIC_DEFAULT_OPUS_MODEL","value":"qwen3.7-max[1m]"},{"name":"CLAUDE_CODE_EFFORT_LEVEL","value":"max"},{"name":"CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC","value":"1"}]'
+      V_T='[{"name":"ANTHROPIC_BASE_URL","value":"http://localhost:3456"},{"name":"ANTHROPIC_AUTH_TOKEN","value":"__CCR_APIKEY__"},{"name":"ANTHROPIC_DEFAULT_HAIKU_MODEL","value":"deepseek-v4-flash[1m]"},{"name":"ANTHROPIC_DEFAULT_SONNET_MODEL","value":"qwen3.7-plus[1m]"},{"name":"ANTHROPIC_DEFAULT_OPUS_MODEL","value":"qwen3.7-max[1m]"},{"name":"CLAUDE_CODE_SUBAGENT_MODEL","value":"qwen3.7-flash"},{"name":"CLAUDE_CODE_EFFORT_LEVEL","value":"max"},{"name":"CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC","value":"1"}]'
       ;;
   esac
   VSCODE_ENVS="${V_T//__DEEPSEEK_API_KEY__/$DEEPSEEK_API_KEY}"
@@ -272,7 +272,7 @@ echo "🔄 同步 WSL 终端配置..."
 case "$PROFILE" in
     direct)
       if [ "$DIRECT_PROVIDER" = "qwen" ]; then
-        W_T='{"ANTHROPIC_BASE_URL":"https://dashscope.aliyuncs.com/apps/anthropic","ANTHROPIC_AUTH_TOKEN":"__DASHSCOPE_API_KEY__","ANTHROPIC_MODEL":"qwen3.6-plus","ANTHROPIC_DEFAULT_HAIKU_MODEL":"qwen3.6-flash","ANTHROPIC_DEFAULT_SONNET_MODEL":"qwen3.6-plus","ANTHROPIC_DEFAULT_OPUS_MODEL":"qwen3.7-max[1m]","CLAUDE_CODE_EFFORT_LEVEL":"max","CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC":"1"}'
+        W_T='{"ANTHROPIC_BASE_URL":"https://dashscope.aliyuncs.com/apps/anthropic","ANTHROPIC_AUTH_TOKEN":"__DASHSCOPE_API_KEY__","ANTHROPIC_MODEL":"qwen3.7-plus[1m]","ANTHROPIC_DEFAULT_HAIKU_MODEL":"qwen3.7-flash","ANTHROPIC_DEFAULT_SONNET_MODEL":"qwen3.7-plus[1m]","ANTHROPIC_DEFAULT_OPUS_MODEL":"qwen3.7-max[1m]","CLAUDE_CODE_SUBAGENT_MODEL":"qwen3.7-flash","CLAUDE_CODE_EFFORT_LEVEL":"max","CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC":"1"}'
       else
         W_T='{"ANTHROPIC_BASE_URL":"https://api.deepseek.com/anthropic","ANTHROPIC_AUTH_TOKEN":"__DEEPSEEK_API_KEY__","ANTHROPIC_MODEL":"deepseek-v4-pro[1m]","ANTHROPIC_DEFAULT_HAIKU_MODEL":"deepseek-v4-flash[1m]","ANTHROPIC_DEFAULT_SONNET_MODEL":"deepseek-v4-pro[1m]","ANTHROPIC_DEFAULT_OPUS_MODEL":"deepseek-v4-pro[1m]","CLAUDE_CODE_SUBAGENT_MODEL":"deepseek-v4-flash[1m]","CLAUDE_CODE_EFFORT_LEVEL":"max","CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC":"1"}'
       fi
@@ -287,7 +287,7 @@ case "$PROFILE" in
       W_T='{"ANTHROPIC_BASE_URL":"http://localhost:3457","ANTHROPIC_AUTH_TOKEN":"__CCR_APIKEY__","ANTHROPIC_MODEL":"deepseek-v4-pro[1m]","ANTHROPIC_DEFAULT_HAIKU_MODEL":"deepseek-v4-flash[1m]","ANTHROPIC_DEFAULT_SONNET_MODEL":"deepseek-v4-pro[1m]","ANTHROPIC_DEFAULT_OPUS_MODEL":"qwen3.7-max[1m]","CLAUDE_CODE_SUBAGENT_MODEL":"deepseek-v4-flash","CLAUDE_CODE_EFFORT_LEVEL":"max","CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC":"1"}'
       ;;
     hybrid|hybrid-toolfree|layer1|layer2|layer3)
-      W_T='{"ANTHROPIC_BASE_URL":"http://localhost:3456","ANTHROPIC_AUTH_TOKEN":"__CCR_APIKEY__","ANTHROPIC_DEFAULT_HAIKU_MODEL":"deepseek-v4-flash[1m]","ANTHROPIC_DEFAULT_SONNET_MODEL":"qwen3.6-plus","ANTHROPIC_DEFAULT_OPUS_MODEL":"qwen3.7-max[1m]","CLAUDE_CODE_EFFORT_LEVEL":"max","CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC":"1"}'
+      W_T='{"ANTHROPIC_BASE_URL":"http://localhost:3456","ANTHROPIC_AUTH_TOKEN":"__CCR_APIKEY__","ANTHROPIC_DEFAULT_HAIKU_MODEL":"deepseek-v4-flash[1m]","ANTHROPIC_DEFAULT_SONNET_MODEL":"qwen3.7-plus[1m]","ANTHROPIC_DEFAULT_OPUS_MODEL":"qwen3.7-max[1m]","CLAUDE_CODE_SUBAGENT_MODEL":"qwen3.7-flash","CLAUDE_CODE_EFFORT_LEVEL":"max","CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC":"1"}'
       ;;
   esac
   WSL_ENVS="${W_T//__DEEPSEEK_API_KEY__/$DEEPSEEK_API_KEY}"

@@ -9,7 +9,7 @@
       "models": [
         "deepseek-v4-flash",
         "deepseek-v4-pro",
-        "qwen3.6-flash",
+        "qwen3.7-flash",
         "qwen3-coder"
       ],
       "transformer": {
@@ -22,7 +22,7 @@
   "Router": {
     "default": "litellm,deepseek-v4-flash",
     "think": "litellm,deepseek-v4-pro",
-    "background": "litellm,qwen3.6-flash"
+    "background": "litellm,qwen3.7-flash"
   },
   "APIKEY": "__CCR_APIKEY__",
   "HOST": "0.0.0.0"

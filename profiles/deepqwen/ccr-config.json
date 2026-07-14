@@ -18,7 +18,7 @@
       "name": "dashscope",
       "api_base_url": "https://dashscope.aliyuncs.com/apps/anthropic",
       "api_key": "__DASHSCOPE_API_KEY__",
-      "models": ["qwen3.6-flash", "qwen3.6-plus", "qwen3.7-max"],
+      "models": ["qwen3.7-flash", "qwen3.7-plus", "qwen3.7-max"],
       "transformer": {
         "use": ["anthropic"]
       }

@@ -21,7 +21,7 @@
       "name": "dashscope",
       "api_base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
       "api_key": "__DASHSCOPE_API_KEY__",
-      "models": ["qwen3.6-flash", "qwen3.6-plus"],
+      "models": ["qwen3.7-flash", "qwen3.7-plus"],
       "transformer": {
         "use": [["maxtoken", { "max_tokens": 65536 }], "enhancetool"]
       }

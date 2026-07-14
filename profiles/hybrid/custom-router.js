@@ -9,18 +9,18 @@ module.exports = async function router(req, config) {
   const needsTools = Array.isArray(req.body.tools) && req.body.tools.length > 0;
 
   if (needsTools && (model.includes('v4-flash') || model.includes('v4-pro'))) {
-    return 'dashscope,qwen3.6-flash'; // 需要工具调用 → 降级到 Qwen Flash
+    return 'dashscope,qwen3.7-flash'; // 需要工具调用 → 降级到 Qwen Flash
   }
 
   // Opus → DeepSeek Pro（深度推理）
   if (model.includes('opus')) return 'deepseek,deepseek-v4-pro';
   // Sonnet → Qwen（中等任务）
-  if (model.includes('sonnet')) return 'dashscope,qwen3.6-plus';
+  if (model.includes('sonnet')) return 'dashscope,qwen3.7-plus';
   // Haiku → DeepSeek Flash（轻量任务）
   if (model.includes('deepseek-v4-flash')) return 'deepseek,deepseek-v4-flash';
   // Dashscope 请求 → 直接走百炼
   if (model.includes('qwen3.7-max'))       return 'dashscope,qwen3.7-max';
-  if (model.includes('qwen3.6-plus'))      return 'dashscope,qwen3.6-plus';
+  if (model.includes('qwen3.7-plus'))      return 'dashscope,qwen3.7-plus';
 
   return null;
 };

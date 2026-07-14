@@ -27,10 +27,11 @@
 # 3) 百炼 Qwen（走 Anthropic 协议）
 export ANTHROPIC_BASE_URL="https://dashscope.aliyuncs.com/apps/anthropic"
 export ANTHROPIC_AUTH_TOKEN="__DASHSCOPE_API_KEY__"
-export ANTHROPIC_MODEL="qwen3.6-plus"
-export ANTHROPIC_DEFAULT_HAIKU_MODEL="qwen3.6-flash"
-export ANTHROPIC_DEFAULT_SONNET_MODEL="qwen3.6-plus"
+export ANTHROPIC_MODEL="qwen3.7-plus"
+export ANTHROPIC_DEFAULT_HAIKU_MODEL="qwen3.7-flash"
+export ANTHROPIC_DEFAULT_SONNET_MODEL="qwen3.7-plus"
 export ANTHROPIC_DEFAULT_OPUS_MODEL="qwen3.7-max"
+export CLAUDE_CODE_SUBAGENT_MODEL="qwen3.7-flash"
 export CLAUDE_CODE_EFFORT_LEVEL="max"
 export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC="1"
 
